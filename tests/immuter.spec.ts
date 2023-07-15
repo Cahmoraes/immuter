@@ -106,4 +106,17 @@ describe('Immuter test suite', () => {
     expect(result).not.toBe(myObject)
     expect(result.map).not.toBe(myObject.map)
   })
+
+  it('should clone recursively a Set', () => {
+    const myObject = {
+      set: new Set(['caique']),
+    }
+
+    const result = Immuter.produce(myObject, (draft) => {
+      draft.set.add('thomas')
+    })
+
+    expect(result).not.toBe(myObject)
+    expect(result.set).not.toBe(myObject.set)
+  })
 })

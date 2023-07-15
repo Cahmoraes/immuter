@@ -21,4 +21,8 @@ export class TypeCheck {
   static isMap(aType: unknown): aType is Map<unknown, unknown> {
     return this.check(aType) === 'map'
   }
+
+  static isSet(aType: unknown): aType is Set<unknown> {
+    return this.check(aType) === 'set'
+  }
 }
