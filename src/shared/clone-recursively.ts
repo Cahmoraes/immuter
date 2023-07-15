@@ -1,4 +1,4 @@
-export type CloneServiceExecuteCallback<Type> = (baseState: Type) => Type
+type CloneServiceExecuteCallback<Type> = (baseState: Type) => Type
 
 type TypedPropertyDescriptorOf<TBaseState> = {
   [P in keyof TBaseState]: TypedPropertyDescriptor<TBaseState[P]>
@@ -11,22 +11,38 @@ export class CloneRecursively {
     aBaseStateCloned: object,
     strategyRecursively: CloneServiceExecuteCallback<unknown>,
   ) {
-    return this.cloneRecursivelyCallback(aBaseStateCloned, strategyRecursively)
+    return this.performClone(aBaseStateCloned, strategyRecursively)
   }
 
-  private static cloneRecursivelyCallback(
+  private static performClone(
     aBaseStateCloned: object,
-    cloneRecursively: CloneServiceExecuteCallback<unknown>,
+    aStrategyRecursively: CloneServiceExecuteCallback<unknown>,
   ) {
     const objectToClone = this.createCloneOf(aBaseStateCloned)
     const descriptors = this.propertyDescriptorsOf(aBaseStateCloned)
     for (const descriptor of Reflect.ownKeys(descriptors)) {
-      this.isEligibleToAssign<typeof objectToClone>(descriptors, descriptor) &&
-        (objectToClone[descriptor] = cloneRecursively(
+      if (this.isEligibleToAssign(descriptors, descriptor)) {
+        objectToClone[descriptor] = aStrategyRecursively(
           Reflect.get(objectToClone, descriptor),
-        ))
+        )
+      }
     }
     return objectToClone
+  }
+
+  private static createCloneOf<TBaseState>(aBaseState: TBaseState) {
+    return Object.create(
+      this.prototypeOf(aBaseState),
+      this.propertyDescriptorsOf(aBaseState),
+    )
+  }
+
+  private static prototypeOf<TBaseState>(aBaseState: TBaseState) {
+    return Object.getPrototypeOf(aBaseState)
+  }
+
+  private static propertyDescriptorsOf<TBaseState>(aBaseState: TBaseState) {
+    return Object.getOwnPropertyDescriptors(aBaseState)
   }
 
   private static isEligibleToAssign<TBaseState>(
@@ -37,20 +53,5 @@ export class CloneRecursively {
       descriptors[String(descriptor)] &&
       Reflect.has(descriptors[String(descriptor)], 'value')
     )
-  }
-
-  private static createCloneOf<TBaseState>(aBaseState: TBaseState) {
-    return Object.create(
-      this.prototypeOf(aBaseState),
-      this.propertyDescriptorsOf(aBaseState),
-    )
-  }
-
-  private static propertyDescriptorsOf<TBaseState>(aBaseState: TBaseState) {
-    return Object.getOwnPropertyDescriptors(aBaseState)
-  }
-
-  private static prototypeOf<TBaseState>(aBaseState: TBaseState) {
-    return Object.getPrototypeOf(aBaseState)
   }
 }
