@@ -65,6 +65,7 @@ describe('Immuter test suite', () => {
         street: 'av primitiva',
         city: 'São Paulo',
       },
+      hobbies: ['book'],
     }
 
     const result = Immuter.produce(myObject, (draft) => {
@@ -81,6 +82,9 @@ describe('Immuter test suite', () => {
     expect(result.address.city).toBe('London')
     expect(result).not.toBe(myObject)
     expect(result.address).not.toBe(myObject.address)
+    // result.address.city = 'isabela'
+    // result.hobbies.push('2')
+    console.log(result)
   })
 
   it('should clone recursively an array', () => {
