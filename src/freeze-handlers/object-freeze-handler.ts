@@ -3,12 +3,6 @@ import { CloneRecursively } from '../shared/clone-recursively'
 import { TypeCheck } from '../type-check'
 import { FreezeHandler, FreezeServiceExecuteCallback } from './freeze-handler'
 
-type TypedPropertyDescriptorOf<TBaseState> = {
-  [P in keyof TBaseState]: TypedPropertyDescriptor<TBaseState[P]>
-} & {
-  [x: string]: PropertyDescriptor
-}
-
 export class ObjectFreezeHandler extends FreezeHandler {
   public handle(
     aType: unknown,
