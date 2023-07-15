@@ -27,10 +27,8 @@ describe('Immuter test suite', () => {
       draft.age = 22
     })
 
-    expect(myObject.name).toBe('caique')
-    expect(myObject.age).toBe(29)
-    expect(result.name).toBe('thomas')
-    expect(result.age).toBe(22)
+    expect(myObject).toEqual({ name: 'caique', age: 29 })
+    expect(result).toEqual({ name: 'thomas', age: 22 })
     expect(result).not.toBe(myObject)
   })
 
@@ -41,6 +39,7 @@ describe('Immuter test suite', () => {
     const result = Immuter.produce(myObject, (draft) => {
       draft.date = new Date()
     })
+    expect(myObject.date).toBeInstanceOf(Date)
     expect(result.date).toBeInstanceOf(Date)
     expect(result).not.toBe(myObject)
     expect(result.date).not.toBe(myObject.date)
@@ -51,11 +50,9 @@ describe('Immuter test suite', () => {
     const result = Immuter.produce(myArray, (draft) => {
       draft.push(4)
     })
-    expect(myArray).toHaveLength(3)
-    expect(myArray).not.toContain(4)
+    expect(myArray).toEqual([1, 2, 3])
     expect(result).toEqual([1, 2, 3, 4])
     expect(result).not.toBe(myArray)
-    expect(result).toHaveLength(4)
   })
 
   it('should clone recursively an object', () => {
@@ -74,17 +71,24 @@ describe('Immuter test suite', () => {
       draft.address.street = 'baker'
     })
 
-    expect(myObject.name).toBe('caique')
-    expect(myObject.address.street).toBe('av primitiva')
-    expect(myObject.address.city).toBe('São Paulo')
-    expect(result.name).toBe('thomas')
-    expect(result.address.street).toBe('baker')
-    expect(result.address.city).toBe('London')
+    expect(myObject).toEqual({
+      name: 'caique',
+      address: {
+        street: 'av primitiva',
+        city: 'São Paulo',
+      },
+      hobbies: ['book'],
+    })
+    expect(result).toEqual({
+      name: 'thomas',
+      address: {
+        street: 'baker',
+        city: 'London',
+      },
+      hobbies: ['book'],
+    })
     expect(result).not.toBe(myObject)
     expect(result.address).not.toBe(myObject.address)
-    // result.address.city = 'isabela'
-    // result.hobbies.push('2')
-    console.log(result)
   })
 
   it('should clone recursively an array', () => {
@@ -108,15 +112,35 @@ describe('Immuter test suite', () => {
       draft.info.hobbies[1][0].name = 'games'
     })
 
-    expect(myObject.name).toBe('caique')
-    expect(result.name).toBe('thomas')
+    expect(myObject).toEqual({
+      name: 'caique',
+      info: {
+        hobbies: [
+          [
+            {
+              name: 'gym',
+            },
+          ],
+          [{ name: 'books' }],
+        ],
+      },
+    })
+    expect(result).toEqual({
+      name: 'thomas',
+      info: {
+        hobbies: [
+          [
+            {
+              name: 'swimming',
+            },
+          ],
+          [{ name: 'games' }],
+        ],
+      },
+    })
     expect(result).not.toBe(myObject)
     expect(result.info.hobbies).not.toBe(myObject.info.hobbies)
     expect(result.info.hobbies[0]).not.toBe(myObject.info.hobbies[0])
-    expect(result.info.hobbies[0][0].name).toBe('swimming')
-    expect(myObject.info.hobbies[0][0].name).toBe('gym')
-    expect(myObject.info.hobbies[1][0].name).toBe('books')
-    expect(result.info.hobbies[1][0].name).toBe('games')
   })
 
   it('should clone recursively a Map', () => {
