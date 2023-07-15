@@ -1,9 +1,11 @@
-import { CloneHandler } from './clone-handlers'
-import { ArrayCloneHandler } from './clone-handlers/array-clone-handler'
-import { DateCloneHandler } from './clone-handlers/date-clone-handler'
-import { MapCloneHandler } from './clone-handlers/map-clone-handler'
-import { ObjectCloneHandler } from './clone-handlers/object-clone-handler'
-import { SetCloneHandler } from './clone-handlers/set-clone-handler'
+import {
+  ArrayCloneHandler,
+  CloneHandler,
+  DateCloneHandler,
+  MapCloneHandler,
+  ObjectCloneHandler,
+  SetCloneHandler,
+} from './clone-handlers'
 
 export class CloneService {
   private static recursivelyHandler?: CloneHandler

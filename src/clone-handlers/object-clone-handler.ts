@@ -1,4 +1,4 @@
-import { CloneHandler, CloneServiceExecuteCallback } from '.'
+import { CloneHandler, CloneServiceExecuteCallback } from './clone-handler'
 import { TypeCheck } from '../type-check'
 
 type TypedPropertyDescriptorOf<TBaseState> = {

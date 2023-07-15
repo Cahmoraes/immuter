@@ -1,24 +1,6 @@
-export type CloneServiceExecuteCallback<Type> = (baseState: Type) => Type
-
-export abstract class CloneHandler<Type = unknown> {
-  private next?: CloneHandler<Type>
-
-  constructor(aHandler?: CloneHandler<Type>) {
-    this.next = aHandler
-  }
-
-  public abstract handle(
-    aType: Type,
-    cloneServiceExecute: CloneServiceExecuteCallback<Type>,
-  ): Type
-
-  protected handleNext(
-    aType: Type,
-    cloneRecursively: CloneServiceExecuteCallback<Type>,
-  ): Type {
-    if (this.next) {
-      return this.next.handle(aType, cloneRecursively)
-    }
-    return aType
-  }
-}
+export * from './clone-handler'
+export * from './array-clone-handler'
+export * from './date-clone-handler'
+export * from './object-clone-handler'
+export * from './map-clone-handler'
+export * from './set-clone-handler'
