@@ -1,6 +1,7 @@
 import { CloneHandler } from './clone-handlers'
 import { ArrayCloneHandler } from './clone-handlers/array-clone-handler'
 import { DateCloneHandler } from './clone-handlers/date-clone-handler'
+import { MapCloneHandler } from './clone-handlers/map-clone-handler'
 import { ObjectCloneHandler } from './clone-handlers/object-clone-handler'
 
 export class CloneService {
@@ -10,7 +11,8 @@ export class CloneService {
     if (!this.recursivelyHandler) {
       const objectCloneHandler = new ObjectCloneHandler()
       const arrayCloneHandler = new ArrayCloneHandler(objectCloneHandler)
-      const dateCloneHandler = new DateCloneHandler(arrayCloneHandler)
+      const mapCloneHandler = new MapCloneHandler(arrayCloneHandler)
+      const dateCloneHandler = new DateCloneHandler(mapCloneHandler)
       this.recursivelyHandler = dateCloneHandler
     }
 

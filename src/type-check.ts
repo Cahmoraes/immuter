@@ -17,4 +17,8 @@ export class TypeCheck {
   static isArray(aType: unknown): aType is unknown[] {
     return Array.isArray(aType)
   }
+
+  static isMap(aType: unknown): aType is Map<unknown, unknown> {
+    return this.check(aType) === 'map'
+  }
 }

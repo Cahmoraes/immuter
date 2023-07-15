@@ -91,4 +91,19 @@ describe('Immuter test suite', () => {
     expect(myObject.info.hobbies[0][0].name).toBe('sport')
     expect(result.info.hobbies[0][0].name).toBe('gym')
   })
+
+  it('should clone recursively a Map', () => {
+    const myObject = {
+      map: new Map([['name', 'caique']]),
+    }
+
+    const result = Immuter.produce(myObject, (draft) => {
+      draft.map.set('name', 'thomas')
+    })
+
+    expect(myObject.map.get('name')).toBe('caique')
+    expect(result.map.get('name')).toBe('caique')
+    expect(result).not.toBe(myObject)
+    expect(result.map).not.toBe(myObject.map)
+  })
 })
