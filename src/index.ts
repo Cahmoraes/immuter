@@ -8,8 +8,8 @@ export class Immuter {
     aBaseState: TBaseState,
     produce: Produce<TBaseState>,
   ) {
-    const clone = CloneService.execute(aBaseState)
-    ProduceService.execute(clone, produce)
-    return clone
+    const draftState = CloneService.execute(aBaseState)
+    ProduceService.execute(draftState, produce)
+    return draftState
   }
 }
