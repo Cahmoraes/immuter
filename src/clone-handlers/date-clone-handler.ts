@@ -1,10 +1,10 @@
-import { CloneHandler, CloneRecursively } from '.'
+import { CloneHandler, CloneServiceExecuteCallback } from '.'
 import { TypeCheck } from '../type-check'
 
 export class DateCloneHandler extends CloneHandler {
   public handle<TBaseState>(
     aType: TBaseState,
-    cloneRecursively: CloneRecursively<unknown>,
+    cloneRecursively: CloneServiceExecuteCallback<unknown>,
   ) {
     if (TypeCheck.isDate(aType)) {
       return new Date(aType)

@@ -1,5 +1,5 @@
 export class TypeCheck {
-  static execute(aType: unknown): string {
+  private static check(aType: unknown): string {
     const typeString = Reflect.apply(Object.prototype.toString, aType, [])
     return typeString
       .slice(typeString.indexOf(' ') + 1, typeString.indexOf(']'))
@@ -7,11 +7,11 @@ export class TypeCheck {
   }
 
   static isDate(aType: unknown): aType is Date {
-    return this.execute(aType) === 'date'
+    return this.check(aType) === 'date'
   }
 
   static isObject(aType: unknown): aType is object {
-    return this.execute(aType) === 'object'
+    return this.check(aType) === 'object'
   }
 
   static isArray(aType: unknown): aType is unknown[] {

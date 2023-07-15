@@ -62,4 +62,33 @@ describe('Immuter test suite', () => {
     expect(result).not.toBe(myObject)
     expect(result.address).not.toBe(myObject.address)
   })
+
+  it('should clone recursively an array', () => {
+    const myObject = {
+      name: 'caique',
+      info: {
+        hobbies: [
+          [
+            {
+              name: 'gym',
+            },
+          ],
+          [{ name: 'books' }],
+        ],
+      },
+    }
+
+    const result = Immuter.produce(myObject, (draft) => {
+      draft.name = 'thomas'
+    })
+
+    expect(myObject.name).toBe('caique')
+    expect(result.name).toBe('caique')
+    expect(result).not.toBe(myObject)
+    expect(result.info.hobbies).not.toBe(myObject.info.hobbies)
+    expect(result.info.hobbies[0]).not.toBe(myObject.info.hobbies[0])
+    myObject.info.hobbies[0][0].name = 'sport'
+    expect(myObject.info.hobbies[0][0].name).toBe('sport')
+    expect(result.info.hobbies[0][0].name).toBe('gym')
+  })
 })

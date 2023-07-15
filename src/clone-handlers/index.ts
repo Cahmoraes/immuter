@@ -1,4 +1,4 @@
-export type CloneRecursively<Type> = (baseState: Type) => Type
+export type CloneServiceExecuteCallback<Type> = (baseState: Type) => Type
 
 export abstract class CloneHandler<Type = unknown> {
   private next?: CloneHandler<Type>
@@ -9,12 +9,12 @@ export abstract class CloneHandler<Type = unknown> {
 
   public abstract handle(
     aType: Type,
-    cloneRecursively: CloneRecursively<Type>,
+    cloneServiceExecute: CloneServiceExecuteCallback<Type>,
   ): Type
 
   protected handleNext(
     aType: Type,
-    cloneRecursively: CloneRecursively<Type>,
+    cloneRecursively: CloneServiceExecuteCallback<Type>,
   ): Type {
     if (this.next) {
       return this.next.handle(aType, cloneRecursively)
