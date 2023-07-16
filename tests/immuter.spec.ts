@@ -175,4 +175,34 @@ describe('Immuter test suite', () => {
     expect(result.set.has('thomas')).toBeTruthy()
     expect(result.set.has('caique')).toBeTruthy()
   })
+
+  it('should not mutate nextState', () => {
+    const baseState = {
+      name: 'john',
+      age: 29,
+      address: {
+        city: 'London',
+        number: 161,
+      },
+      hobbies: new Set(['swimming']),
+      skills: new Map([
+        ['computer', 10],
+        ['sports', 9],
+      ]),
+      flavors: ['vanilla', 'chocolate'],
+    }
+
+    const nextState = Immuter.produce(baseState, (draftState) => {
+      draftState.address.city = 'São Paulo'
+    })
+
+    expect(baseState.address).toHaveProperty('city', 'London')
+    expect(nextState.address).toHaveProperty('city', 'São Paulo')
+
+    expect(() => (nextState.name = 'Martin')).toThrow(TypeError)
+    expect(() => nextState.flavors.push('strawberry')).toThrow(TypeError)
+    expect(() => nextState.flavors.pop()).toThrow(TypeError)
+    expect(Reflect.deleteProperty(nextState, 'flavors')).toBeFalsy()
+    expect(Reflect.has(nextState, 'flavors')).toBeTruthy()
+  })
 })
