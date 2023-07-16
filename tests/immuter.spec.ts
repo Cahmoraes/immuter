@@ -246,4 +246,30 @@ describe('Immuter test suite', () => {
     )
     expect(nextState.skills.has('cooking')).toBeFalsy()
   })
+
+  it('should not mutate state', () => {
+    const baseState = {
+      name: 'john',
+      age: 29,
+      address: {
+        city: 'London',
+        number: 161,
+      },
+      hobbies: new Set(['swimming']),
+      skills: new Map([
+        ['computer', 10],
+        ['sports', 9],
+      ]),
+      flavors: ['vanilla', 'chocolate'],
+    }
+
+    const nextState = Immuter.not.freeze.produce(baseState, (draftState) => {
+      draftState.address.city = 'São Paulo'
+    })
+
+    expect(nextState.address.city).toEqual('São Paulo')
+    nextState.address.city = 'Paris'
+    expect(baseState.address.city).toEqual('London')
+    expect(nextState.address.city).toEqual('Paris')
+  })
 })
