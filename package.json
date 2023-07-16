@@ -9,6 +9,9 @@
     "type": "git",
     "url": "git+https://github.com/Cahmoraes/immuter"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "npx vitest",
     "test:cov": "npx vitest --coverage",
