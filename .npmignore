@@ -1,0 +1,9 @@
+.editorconfig
+coverage/
+.gitignore
+.eslintignore
+tsconfig.json
+tsup.config.ts
+vite.config.ts
+tests/
+src/
