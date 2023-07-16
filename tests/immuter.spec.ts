@@ -1,6 +1,6 @@
-import { Immuter } from '../src'
-import { CannotAssignToImmutableMapError } from '../src/shared/errors/cannot-assign-to-immutable-map-error'
-import { CannotAssignToImmutableSetError } from '../src/shared/errors/cannot-assign-to-immutable-set-error'
+import { Immuter } from '../src/immuter'
+import { CannotAssignToImmutableMapError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-map-error'
+import { CannotAssignToImmutableSetError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-set-error'
 
 describe('Immuter test suite', () => {
   it('should return a valid object', () => {
@@ -198,8 +198,37 @@ describe('Immuter test suite', () => {
       draftState.address.city = 'São Paulo'
     })
 
-    expect(baseState.address).toHaveProperty('city', 'London')
-    expect(nextState.address).toHaveProperty('city', 'São Paulo')
+    expect(baseState).toEqual({
+      name: 'john',
+      age: 29,
+      address: {
+        city: 'London',
+        number: 161,
+      },
+      hobbies: new Set(['swimming']),
+      skills: new Map([
+        ['computer', 10],
+        ['sports', 9],
+      ]),
+      flavors: ['vanilla', 'chocolate'],
+    })
+    expect(nextState).toEqual({
+      name: 'john',
+      age: 29,
+      address: {
+        city: 'São Paulo',
+        number: 161,
+      },
+      hobbies: new Set(['swimming']),
+      skills: new Map([
+        ['computer', 10],
+        ['sports', 9],
+      ]),
+      flavors: ['vanilla', 'chocolate'],
+    })
+    expect(nextState).not.toBe(baseState)
+
+    // Tentativa de mutar informações aninhadas
     expect(() => (nextState.name = 'Martin')).toThrow(TypeError)
     expect(() => nextState.flavors.push('strawberry')).toThrow(TypeError)
     expect(() => nextState.flavors.pop()).toThrow(TypeError)
