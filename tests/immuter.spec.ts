@@ -272,4 +272,103 @@ describe('Immuter test suite', () => {
     expect(baseState.address.city).toEqual('London')
     expect(nextState.address.city).toEqual('Paris')
   })
+
+  it('should clone data structures and immutable', () => {
+    const baseState = {
+      name: 'john',
+      age: 29,
+      address: {
+        city: 'London',
+        number: 161,
+      },
+      hobbies: new Set(['swimming']),
+      skills: new Map([
+        ['computer', 10],
+        ['sports', 9],
+      ]),
+      flavors: ['vanilla', 'chocolate'],
+    }
+
+    const clonedState = Immuter.clone(baseState)
+
+    // Assert objects are equal but not the same reference
+    expect(clonedState).toEqual(baseState)
+    expect(clonedState).not.toBe(baseState)
+    expect(Object.isFrozen(clonedState)).toBe(true)
+    expect(() => (clonedState.address.city = 'Paris')).toThrow()
+    expect(
+      () => ((clonedState as any).randomProperty = 'random value'),
+    ).toThrow()
+
+    // Assert nested objects are equal but not the same reference
+    expect(clonedState.address).toEqual(baseState.address)
+    expect(clonedState.address).not.toBe(baseState.address)
+    expect(Object.isFrozen(clonedState.address)).toBe(true)
+
+    // Assert sets are equal but not the same reference
+    expect(clonedState.hobbies).toEqual(baseState.hobbies)
+    expect(clonedState.hobbies).not.toBe(baseState.hobbies)
+    expect(Object.isFrozen(clonedState.hobbies)).toBe(true)
+    expect(() => clonedState.hobbies.add('random value')).toThrow()
+
+    // Assert maps are equal but not the same reference
+    expect(clonedState.skills).toEqual(baseState.skills)
+    expect(clonedState.skills).not.toBe(baseState.skills)
+    expect(Object.isFrozen(clonedState.skills)).toBe(true)
+    expect(() => clonedState.skills.set('random', 10)).toThrow()
+
+    // Assert arrays are equal but not the same reference
+    expect(clonedState.flavors).toEqual(baseState.flavors)
+    expect(clonedState.flavors).not.toBe(baseState.flavors)
+    expect(Object.isFrozen(clonedState.flavors)).toBe(true)
+    expect(() => clonedState.flavors.push('random')).toThrow()
+    expect(() => clonedState.flavors.pop()).toThrow()
+    expect(() => clonedState.flavors.reverse()).toThrow()
+    expect(() => clonedState.flavors.shift()).toThrow()
+    expect(() => clonedState.flavors.unshift('random')).toThrow()
+  })
+
+  it('should clone data structures and mutable', () => {
+    const baseState = {
+      name: 'john',
+      age: 29,
+      address: {
+        city: 'London',
+        number: 161,
+      },
+      hobbies: new Set(['swimming']),
+      skills: new Map([
+        ['computer', 10],
+        ['sports', 9],
+      ]),
+      flavors: ['vanilla', 'chocolate'],
+    }
+
+    const clonedState = Immuter.not.freeze.clone(baseState)
+
+    // Assert objects are equal but not the same reference
+    expect(clonedState).toEqual(baseState)
+    expect(clonedState).not.toBe(baseState)
+    expect(Object.isFrozen(clonedState)).toBe(false)
+
+    // Assert nested objects are equal but not the same reference
+    expect(clonedState.address).toEqual(baseState.address)
+    expect(clonedState.address).not.toBe(baseState.address)
+    expect(Object.isFrozen(clonedState.address)).toBe(false)
+
+    // Assert sets are equal but not the same reference
+    expect(clonedState.hobbies).toEqual(baseState.hobbies)
+    expect(clonedState.hobbies).not.toBe(baseState.hobbies)
+    expect(Object.isFrozen(clonedState.hobbies)).toBe(false)
+
+    // Assert maps are equal but not the same reference
+    expect(clonedState.skills).toEqual(baseState.skills)
+    expect(clonedState.skills).not.toBe(baseState.skills)
+    expect(Object.isFrozen(clonedState.skills)).toBe(false)
+
+    // Assert arrays are equal but not the same reference
+    expect(clonedState.flavors).toEqual(baseState.flavors)
+    expect(clonedState.flavors).not.toBe(baseState.flavors)
+    expect(Object.isFrozen(clonedState.flavors)).toBe(false)
+  })
 })

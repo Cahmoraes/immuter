@@ -17,24 +17,41 @@ export class Immuter {
     this.config.freeze = false
     return {
       produce: this.produce,
+      clone: this.clone,
     }
   }
 
-  static get not() {
+  public static get not() {
     return {
       freeze: this.freeze,
     }
   }
 
-  static produce<TBaseState extends object>(
+  public static clone<TBaseState extends object>(aBaseState: TBaseState) {
+    const draftState = CloneService.execute(aBaseState)
+    const result = Immuter.config.freeze
+      ? FreezeService.execute(draftState)
+      : draftState
+
+    Immuter.resetConfig()
+    return result
+  }
+
+  public static produce<TBaseState extends object>(
     aBaseState: TBaseState,
     produce: Produce<TBaseState>,
   ) {
     const draftState = CloneService.execute(aBaseState)
     ProduceService.execute(draftState, produce)
-
-    return Immuter.config.freeze
+    const result = Immuter.config.freeze
       ? FreezeService.execute(draftState)
       : draftState
+
+    Immuter.resetConfig()
+    return result
+  }
+
+  private static resetConfig() {
+    this.config.freeze = true
   }
 }
