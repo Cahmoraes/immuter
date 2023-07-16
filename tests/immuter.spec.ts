@@ -18,6 +18,31 @@ describe('Immuter test suite', () => {
     expect(result.name).toBe('thomas')
   })
 
+  it('should clone basic object with getters and setters', () => {
+    const myObject = {
+      _name: 'caique',
+      get name() {
+        return this._name
+      },
+      set name(aValue) {
+        this._name = aValue
+      },
+    }
+
+    const result = Immuter.produce(myObject, (draft) => {
+      draft.name = 'thomas'
+    })
+
+    expect(result.name).toBe('thomas')
+    expect(myObject.name).toBe('caique')
+    expect(Object.getOwnPropertyDescriptor(result, 'name')?.get).toBeInstanceOf(
+      Function,
+    )
+    expect(Object.getOwnPropertyDescriptor(result, 'name')?.set).toBeInstanceOf(
+      Function,
+    )
+  })
+
   it('should clone object with nested properties', () => {
     const myObject = {
       name: 'caique',
