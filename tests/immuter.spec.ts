@@ -1,4 +1,6 @@
 import { Immuter } from '../src'
+import { CannotAssignToImmutableMapError } from '../src/shared/errors/cannot-assign-to-immutable-map-error'
+import { CannotAssignToImmutableSetError } from '../src/shared/errors/cannot-assign-to-immutable-set-error'
 
 describe('Immuter test suite', () => {
   it('should return a valid object', () => {
@@ -198,11 +200,21 @@ describe('Immuter test suite', () => {
 
     expect(baseState.address).toHaveProperty('city', 'London')
     expect(nextState.address).toHaveProperty('city', 'São Paulo')
-
     expect(() => (nextState.name = 'Martin')).toThrow(TypeError)
     expect(() => nextState.flavors.push('strawberry')).toThrow(TypeError)
     expect(() => nextState.flavors.pop()).toThrow(TypeError)
     expect(Reflect.deleteProperty(nextState, 'flavors')).toBeFalsy()
     expect(Reflect.has(nextState, 'flavors')).toBeTruthy()
+    expect(() => nextState.hobbies.add('reading')).toThrow(
+      CannotAssignToImmutableSetError,
+    )
+    expect(() => nextState.hobbies.delete('swimming')).toThrow(
+      CannotAssignToImmutableSetError,
+    )
+    expect(nextState.hobbies.has('reading')).toBeFalsy()
+    expect(() => nextState.skills.set('cooking', 5)).toThrow(
+      CannotAssignToImmutableMapError,
+    )
+    expect(nextState.skills.has('cooking')).toBeFalsy()
   })
 })
