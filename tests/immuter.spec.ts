@@ -277,6 +277,63 @@ describe('Immuter test suite', () => {
     expect(aDate.getDate()).toEqual(16)
   })
 
+  describe('Immuter User Tests', () => {
+    class Person {
+      constructor(public name: string) {}
+      greet() {
+        return `Hello, my name is ${this.name}`
+      }
+    }
+
+    class User extends Person {
+      constructor(
+        name: string,
+        public age: number,
+      ) {
+        super(name)
+      }
+
+      celebrateBirthday() {
+        this.age++
+      }
+    }
+
+    describe('Immuter User Tests with Class and Superclass', () => {
+      it('should produce a new User object preserving the prototype chain', () => {
+        const user = new User('John', 30)
+
+        const result = Immuter.produce(user, (draft) => {
+          draft.age = 31
+        })
+
+        expect(result).toBeInstanceOf(User)
+        expect(result).toBeInstanceOf(Person)
+        expect(result).toEqual({ name: 'John', age: 31 })
+        expect(user).toEqual({ name: 'John', age: 30 })
+        expect(result.greet()).toBe('Hello, my name is John')
+        expect(result).not.toBe(user)
+        expect(result).toBeInstanceOf(Person)
+        expect(result.greet()).toEqual(user.greet())
+      })
+
+      it('should clone a User object preserving the prototype chain', () => {
+        const user = new User('John', 30)
+
+        const clonedUser = Immuter.clone(user)
+
+        expect(clonedUser).toBeInstanceOf(User)
+        expect(clonedUser).toBeInstanceOf(Person)
+        user.age = 31
+        expect(clonedUser).toEqual({ name: 'John', age: 30 })
+        expect(user).toEqual({ name: 'John', age: 31 })
+        expect(clonedUser.greet()).toBe('Hello, my name is John')
+        expect(clonedUser).not.toBe(user)
+        expect(clonedUser).toBeInstanceOf(Person)
+        expect(clonedUser.greet()).toEqual(user.greet())
+      })
+    })
+  })
+
   describe('Immuter.produce not freeze', () => {
     it('should not mutate state', () => {
       const baseState = {

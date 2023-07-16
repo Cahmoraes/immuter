@@ -7,6 +7,7 @@
     "plugin:vitest-globals/recommended"
   ],
   "rules": {
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "no-useless-constructor": "off"
   }
 }
