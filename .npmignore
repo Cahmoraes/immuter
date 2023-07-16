@@ -7,3 +7,4 @@ tsup.config.ts
 vite.config.ts
 tests/
 src/
+.eslintrc.json
