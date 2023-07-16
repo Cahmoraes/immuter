@@ -1,4 +1,4 @@
-import { Immuter } from '../src/immuter'
+import { Immuter } from '../src/'
 import { CannotAssignToImmutableMapError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-map-error'
 import { CannotAssignToImmutableSetError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-set-error'
 
