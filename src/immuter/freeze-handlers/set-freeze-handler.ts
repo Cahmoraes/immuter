@@ -1,5 +1,5 @@
 import { CannotAssignToImmutableSetError } from '../shared/errors/cannot-assign-to-immutable-set-error'
-import { TypeCheck } from '../type-check'
+import { TypeCheck } from '../shared/type-check'
 import { FreezeHandler, FreezeServiceExecuteCallback } from './freeze-handler'
 
 export class SetFreezeHandler extends FreezeHandler {

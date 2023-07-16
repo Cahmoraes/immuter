@@ -1,5 +1,5 @@
 import { CannotAssignToImmutableMapError } from '../shared/errors/cannot-assign-to-immutable-map-error'
-import { TypeCheck } from '../type-check'
+import { TypeCheck } from '../shared/type-check'
 import { FreezeHandler, FreezeServiceExecuteCallback } from './freeze-handler'
 
 export class MapFreezeHandler extends FreezeHandler {

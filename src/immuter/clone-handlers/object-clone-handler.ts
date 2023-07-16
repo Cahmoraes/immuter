@@ -1,5 +1,5 @@
 import { CloneHandler, CloneServiceExecuteCallback } from './clone-handler'
-import { TypeCheck } from '../type-check'
+import { TypeCheck } from '../shared/type-check'
 import { CloneRecursively } from '../shared/clone-recursively'
 
 export class ObjectCloneHandler extends CloneHandler {

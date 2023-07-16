@@ -1,6 +1,6 @@
-import { CloneService } from './clone-service'
-import { FreezeService } from './freeze-service'
-import { ProduceService } from './produce-service'
+import { CloneService } from './services/clone-service'
+import { FreezeService } from './services/freeze-service'
+import { ProduceService } from './services/produce-service'
 
 type Produce<TBaseState> = (draftState: TBaseState) => void
 

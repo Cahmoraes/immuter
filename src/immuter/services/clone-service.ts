@@ -5,7 +5,7 @@ import {
   MapCloneHandler,
   ObjectCloneHandler,
   SetCloneHandler,
-} from './clone-handlers'
+} from '../clone-handlers'
 
 export class CloneService {
   private static recursivelyHandler?: CloneHandler

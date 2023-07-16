@@ -4,7 +4,7 @@ import {
   MapFreezeHandler,
   ObjectFreezeHandler,
   SetFreezeHandler,
-} from './freeze-handlers'
+} from '../freeze-handlers'
 
 export class FreezeService {
   private static recursivelyHandler?: FreezeHandler

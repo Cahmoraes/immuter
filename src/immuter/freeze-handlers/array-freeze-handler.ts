@@ -1,5 +1,5 @@
-import { CloneService } from '../clone-service'
-import { TypeCheck } from '../type-check'
+import { CloneService } from '../services/clone-service'
+import { TypeCheck } from '../shared/type-check'
 import { FreezeHandler, FreezeServiceExecuteCallback } from './freeze-handler'
 
 export class ArrayFreezeHandler extends FreezeHandler {

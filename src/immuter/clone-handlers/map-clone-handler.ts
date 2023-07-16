@@ -1,5 +1,5 @@
 import { CloneHandler, CloneServiceExecuteCallback } from './clone-handler'
-import { TypeCheck } from '../type-check'
+import { TypeCheck } from '../shared/type-check'
 
 export class MapCloneHandler extends CloneHandler {
   public handle(

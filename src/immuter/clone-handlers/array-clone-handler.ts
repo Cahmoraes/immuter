@@ -1,5 +1,5 @@
 import { CloneHandler, CloneServiceExecuteCallback } from './clone-handler'
-import { TypeCheck } from '../type-check'
+import { TypeCheck } from '../shared/type-check'
 
 export class ArrayCloneHandler extends CloneHandler {
   public handle(
