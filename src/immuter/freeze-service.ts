@@ -1,8 +1,10 @@
-import { ArrayFreezeHandler } from './freeze-handlers/array-freeze-handler'
-import { FreezeHandler } from './freeze-handlers/freeze-handler'
-import { MapFreezeHandler } from './freeze-handlers/map-freeze-handler'
-import { ObjectFreezeHandler } from './freeze-handlers/object-freeze-handler'
-import { SetFreezeHandler } from './freeze-handlers/set-freeze-handler'
+import {
+  ArrayFreezeHandler,
+  FreezeHandler,
+  MapFreezeHandler,
+  ObjectFreezeHandler,
+  SetFreezeHandler,
+} from './freeze-handlers'
 
 export class FreezeService {
   private static recursivelyHandler?: FreezeHandler
