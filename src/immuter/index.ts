@@ -13,45 +13,53 @@ export class Immuter {
     freeze: true,
   }
 
-  private static get freeze() {
-    this.config.freeze = false
-    return {
-      produce: this.produce,
-      clone: this.clone,
-    }
-  }
-
   public static get not() {
     return {
-      freeze: this.freeze,
+      freeze: this.freeze(false),
     }
   }
 
-  public static clone<TBaseState extends object>(aBaseState: TBaseState) {
-    const draftState = CloneService.execute(aBaseState)
-    const result = Immuter.config.freeze
-      ? FreezeService.execute(draftState)
-      : draftState
+  private static freeze(value: boolean) {
+    this.config.freeze = value
+    return {
+      clone: this.clone.bind(this),
+      produce: this.produce.bind(this),
+    }
+  }
 
+  public static clone<TBaseState extends object>(
+    aBaseState: TBaseState,
+  ): TBaseState {
+    const draftState = CloneService.execute(aBaseState)
+    return this.execute(draftState)
+  }
+
+  private static execute<TBaseState extends object>(
+    aDraftState: TBaseState,
+  ): TBaseState {
+    const result = this.freezeIfNecessary(aDraftState)
     Immuter.resetConfig()
     return result
+  }
+
+  private static freezeIfNecessary<TBaseState extends object>(
+    aDraftState: TBaseState,
+  ) {
+    return Immuter.config.freeze
+      ? FreezeService.execute(aDraftState)
+      : aDraftState
+  }
+
+  private static resetConfig() {
+    this.config.freeze = true
   }
 
   public static produce<TBaseState extends object>(
     aBaseState: TBaseState,
     produce: Produce<TBaseState>,
-  ) {
+  ): TBaseState {
     const draftState = CloneService.execute(aBaseState)
     ProduceService.execute(draftState, produce)
-    const result = Immuter.config.freeze
-      ? FreezeService.execute(draftState)
-      : draftState
-
-    Immuter.resetConfig()
-    return result
-  }
-
-  private static resetConfig() {
-    this.config.freeze = true
+    return this.execute(draftState)
   }
 }

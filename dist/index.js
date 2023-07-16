@@ -312,33 +312,37 @@ var ProduceService = class {
 
 // src/immuter/index.ts
 var _Immuter = class _Immuter {
-  static get freeze() {
-    this.config.freeze = false;
-    return {
-      produce: this.produce,
-      clone: this.clone
-    };
-  }
   static get not() {
     return {
-      freeze: this.freeze
+      freeze: this.freeze(false)
+    };
+  }
+  static freeze(value) {
+    this.config.freeze = value;
+    return {
+      clone: this.clone.bind(this),
+      produce: this.produce.bind(this)
     };
   }
   static clone(aBaseState) {
     const draftState = CloneService.execute(aBaseState);
-    const result = _Immuter.config.freeze ? FreezeService.execute(draftState) : draftState;
+    return this.execute(draftState);
+  }
+  static execute(aDraftState) {
+    const result = this.freezeIfNecessary(aDraftState);
     _Immuter.resetConfig();
     return result;
+  }
+  static freezeIfNecessary(aDraftState) {
+    return _Immuter.config.freeze ? FreezeService.execute(aDraftState) : aDraftState;
+  }
+  static resetConfig() {
+    this.config.freeze = true;
   }
   static produce(aBaseState, produce) {
     const draftState = CloneService.execute(aBaseState);
     ProduceService.execute(draftState, produce);
-    const result = _Immuter.config.freeze ? FreezeService.execute(draftState) : draftState;
-    _Immuter.resetConfig();
-    return result;
-  }
-  static resetConfig() {
-    this.config.freeze = true;
+    return this.execute(draftState);
   }
 };
 _Immuter.config = {
