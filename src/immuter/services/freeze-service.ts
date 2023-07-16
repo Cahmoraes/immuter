@@ -5,6 +5,7 @@ import {
   ObjectFreezeHandler,
   SetFreezeHandler,
 } from '../freeze-handlers'
+import { DateFreezeHandler } from '../freeze-handlers/date-clone-handler'
 
 export class FreezeService {
   private static recursivelyHandler?: FreezeHandler
@@ -15,7 +16,8 @@ export class FreezeService {
       const mapFreezeHandler = new MapFreezeHandler(setFreezeHandler)
       const objectFreezeHandler = new ObjectFreezeHandler(mapFreezeHandler)
       const arrayFreezeHandler = new ArrayFreezeHandler(objectFreezeHandler)
-      this.recursivelyHandler = arrayFreezeHandler
+      const dateFreezeHandler = new DateFreezeHandler(arrayFreezeHandler)
+      this.recursivelyHandler = dateFreezeHandler
     }
 
     return this.recursivelyHandler.handle(
