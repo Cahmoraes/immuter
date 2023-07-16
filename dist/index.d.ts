@@ -7,7 +7,7 @@ declare class Immuter {
             produce: typeof Immuter.produce;
         };
     };
-    private static freeze;
+    private static setFreeze;
     static clone<TBaseState extends object>(aBaseState: TBaseState): TBaseState;
     private static execute;
     private static freezeIfNecessary;
