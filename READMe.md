@@ -159,6 +159,6 @@ Licença da biblioteca: MIT.
 
 [//]: # 'Referências de links usados na seção de "Badges" e outras seções'
 [npm-image]: https://img.shields.io/npm/v/minha-biblioteca.svg
-[npm-url]: https://www.npmjs.com/package/minha-biblioteca
+[npm-url]: https://www.npmjs.com/package/@cahmoraes93/immuter
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: https://opensource.org/licenses/MIT
