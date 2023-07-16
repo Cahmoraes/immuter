@@ -15,12 +15,12 @@ export class Immuter {
 
   public static get not() {
     return {
-      freeze: this.freeze(false),
+      freeze: this.setFreeze(false),
     }
   }
 
-  private static freeze(value: boolean) {
-    this.config.freeze = value
+  private static setFreeze(aBoolean: boolean) {
+    this.config.freeze = aBoolean
     return {
       clone: this.clone.bind(this),
       produce: this.produce.bind(this),
