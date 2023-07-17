@@ -27,6 +27,9 @@ describe('Immuter test suite', () => {
       set name(aValue) {
         this._name = aValue
       },
+      getName() {
+        return this.name
+      },
     }
 
     const result = Immuter.produce(myObject, (draft) => {
@@ -34,6 +37,8 @@ describe('Immuter test suite', () => {
     })
 
     expect(result.name).toBe('thomas')
+    expect(result.getName).toBeInstanceOf(Function)
+    expect(result.getName()).toBe('thomas')
     expect(myObject.name).toBe('caique')
     expect(Object.getOwnPropertyDescriptor(result, 'name')?.get).toBeInstanceOf(
       Function,
