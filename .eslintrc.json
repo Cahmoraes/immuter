@@ -8,6 +8,18 @@
   ],
   "rules": {
     "no-use-before-define": "off",
-    "no-useless-constructor": "off"
+    "no-useless-constructor": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "arrowParens": "always",
+        "printWidth": 80,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "semi": false,
+        "endOfLine": "auto",
+        "tabWidth": 2
+      }
+    ]
   }
 }
