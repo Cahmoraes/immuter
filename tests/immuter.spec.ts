@@ -712,9 +712,13 @@ describe('Immuter test suite', () => {
         draft.name = 'thomas'
       })
 
+      expect(Object.isFrozen(clonedState3)).toBe(false)
+
       const clonedState4 = Immuter.produce(baseState, (draft) => {
         draft.name = 'thomas'
       })
+
+      expect(Object.isFrozen(clonedState4)).toBe(false)
     })
 
     it('should clone Date', () => {
