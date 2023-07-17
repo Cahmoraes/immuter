@@ -12,30 +12,35 @@ const initialState: ImmuterConfigProps = {
 }
 
 export class Immuter {
-  private static globalImmuterInstance = new Immuter(initialState)
-
+  private static instance = this.createImmutable()
   private constructor(private readonly config: ImmuterConfigProps) {}
+
+  private static createImmutable(): Immuter {
+    return new Immuter(initialState)
+  }
+
+  private static createMutable(): Immuter {
+    return new Immuter({
+      freeze: false,
+    })
+  }
 
   public static get global() {
     return {
       not: {
         freeze: () => {
-          this.globalImmuterInstance = new Immuter({
-            freeze: false,
-          })
+          this.instance = this.createMutable()
         },
       },
       freeze: () => {
-        this.globalImmuterInstance = new Immuter(initialState)
+        this.instance = this.createImmutable()
       },
     }
   }
 
   public static get not() {
     return {
-      freeze: new Immuter({
-        freeze: false,
-      }),
+      freeze: this.createMutable(),
     }
   }
 
@@ -43,13 +48,13 @@ export class Immuter {
     aBaseState: TBaseState,
     aProducer: Producer<TBaseState>,
   ) {
-    return this.globalImmuterInstance.produce(aBaseState, aProducer)
+    return this.instance.produce(aBaseState, aProducer)
   }
 
   public static clone<TBaseState extends object>(
     aBaseState: TBaseState,
   ): TBaseState {
-    return this.globalImmuterInstance.clone(aBaseState)
+    return this.instance.clone(aBaseState)
   }
 
   public clone<TBaseState extends object>(aBaseState: TBaseState): TBaseState {
