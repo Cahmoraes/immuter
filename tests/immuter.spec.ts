@@ -737,6 +737,18 @@ describe('Immuter test suite', () => {
       clonedState.push(4)
       expect(clonedState.length).toBe(4)
     })
+    it.only('should clone object with Symbols', () => {
+      const symbolProperty = Symbol('property')
+      const baseState = {
+        [symbolProperty]: 'value',
+      }
+      const clonedState = Immuter.produce(baseState, (draft) => {
+        draft[symbolProperty] = 'new_value'
+      })
+
+      expect(baseState[symbolProperty]).toBe('value')
+      expect(clonedState[symbolProperty]).toBe('new_value')
+    })
   })
 
   describe('Immuter.global', () => {
