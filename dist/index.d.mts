@@ -1,35 +1,23 @@
-interface ImmuterGlobalConfigProps {
-    setGlobalConfig(aBoolean: boolean): void;
-    setFreezeConfig(aBoolean: boolean): void;
-}
-declare class GlobalConfig {
-    private ImmuterGlobalConfig;
-    constructor(ImmuterGlobalConfig: ImmuterGlobalConfigProps);
-    get not(): {
+type Producer<TBaseState> = (draftState: TBaseState) => void;
+declare class Immuter {
+    private readonly config;
+    private static globalImmuterInstance;
+    private constructor();
+    static get global(): {
+        not: {
+            freeze: () => void;
+        };
         freeze: () => void;
     };
-    freeze(): void;
-}
-
-type Produce<TBaseState> = (draftState: TBaseState) => void;
-declare class Immuter {
-    private static config;
-    private static setGlobalConfig;
-    private static setFreezeConfig;
-    private static globalImmuterConfig;
-    static get global(): GlobalConfig;
     static get not(): {
-        freeze: {
-            clone: typeof Immuter.clone;
-            produce: typeof Immuter.produce;
-        };
+        freeze: Immuter;
     };
-    private static setFreeze;
+    static produce<TBaseState extends object>(aBaseState: TBaseState, aProducer: Producer<TBaseState>): TBaseState;
     static clone<TBaseState extends object>(aBaseState: TBaseState): TBaseState;
-    private static execute;
-    private static freezeIfNecessary;
-    private static resetFreezeConfig;
-    static produce<TBaseState extends object>(aBaseState: TBaseState, produce: Produce<TBaseState>): TBaseState;
+    clone<TBaseState extends object>(aBaseState: TBaseState): TBaseState;
+    private execute;
+    private freezeIfNecessary;
+    produce<TBaseState extends object>(aBaseState: TBaseState, produce: Producer<TBaseState>): TBaseState;
 }
 
 export { Immuter };
