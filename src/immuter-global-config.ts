@@ -3,7 +3,7 @@ interface ImmuterGlobalConfigProps {
   setFreezeConfig(aBoolean: boolean): void
 }
 
-export class GlobalConfig {
+export class ImmuterGlobalConfig {
   constructor(private ImmuterGlobalConfig: ImmuterGlobalConfigProps) {}
 
   public get not() {

@@ -633,6 +633,90 @@ describe('Immuter test suite', () => {
       expect(clonedState.has('grape')).toBeTruthy()
     })
 
+    it('should alternate between and Immuter.global.not.freeze() and Immuter.global.freeze()', () => {
+      const baseState = {
+        name: 'caique',
+      }
+      Immuter.global.freeze()
+      const clonedState = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      const clonedState2 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      const clonedState3 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      const clonedState4 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      expect(Object.isFrozen(clonedState)).toBeTruthy()
+      expect(Object.isFrozen(clonedState2)).toBeTruthy()
+      expect(Object.isFrozen(clonedState3)).toBeTruthy()
+      expect(Object.isFrozen(clonedState4)).toBeTruthy()
+      Immuter.global.not.freeze()
+      const clonedState5 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      const clonedState6 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      expect(Object.isFrozen(clonedState5)).toBeFalsy()
+      expect(Object.isFrozen(clonedState6)).toBeFalsy()
+
+      Immuter.global.freeze()
+      const clonedState7 = Immuter.not.freeze.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      expect(Object.isFrozen(clonedState7)).toBe(false)
+
+      Immuter.global.not.freeze()
+      const clonedState8 = Immuter.not.freeze.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+
+      expect(Object.isFrozen(clonedState8)).toBe(false)
+
+      Immuter.global.freeze()
+      const clonedState9 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+
+      expect(Object.isFrozen(clonedState9)).toBe(true)
+
+      const clonedState10 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+      expect(Object.isFrozen(clonedState10)).toBe(true)
+    })
+
+    it('example', () => {
+      const baseState = {
+        name: 'caique',
+      }
+      Immuter.global.freeze()
+      const clonedState1 = Immuter.not.freeze.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+
+      expect(Object.isFrozen(clonedState1)).toBeFalsy()
+
+      const clonedState2 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+
+      expect(Object.isFrozen(clonedState2)).toBeTruthy()
+
+      Immuter.global.not.freeze()
+      const clonedState3 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+
+      const clonedState4 = Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      })
+    })
+
     it('should clone Date', () => {
       const baseState = new Date()
 
