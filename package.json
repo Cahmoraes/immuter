@@ -1,6 +1,6 @@
 {
   "name": "@cahmoraes93/immuter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Pacote para trabalhar com imutabilidade e clonagem profunda de estruturas de dados",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
