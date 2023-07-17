@@ -1,3 +1,5 @@
+import { CloneExceptionError } from './errors/clone-exception-error'
+
 type CloneServiceExecuteCallback<Type> = (baseState: Type) => Type
 
 type TypedPropertyDescriptorOf<TBaseState> = {
@@ -11,7 +13,11 @@ export class CloneRecursively {
     aBaseStateCloned: object,
     strategyRecursively: CloneServiceExecuteCallback<unknown>,
   ) {
-    return this.performClone(aBaseStateCloned, strategyRecursively)
+    try {
+      return this.performClone(aBaseStateCloned, strategyRecursively)
+    } catch (error) {
+      if (error instanceof Error) throw new CloneExceptionError(error.message)
+    }
   }
 
   private static performClone(

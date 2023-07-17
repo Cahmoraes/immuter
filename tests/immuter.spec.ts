@@ -1,6 +1,7 @@
 import { Immuter } from '../src'
 import { CannotAssignToImmutableMapError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-map-error'
 import { CannotAssignToImmutableSetError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-set-error'
+import { CloneExceptionError } from '../src/immuter/shared/errors/clone-exception-error'
 
 describe('Immuter test suite', () => {
   it('should clone basic object', () => {
@@ -724,8 +725,16 @@ describe('Immuter test suite', () => {
         draftState.name = 'bolt'
         draftState.address.city = 'Miami'
       })
+
       nextState4.name = 'bob'
       expect(nextState4.name).toBe('bob')
+
+      Immuter.global.freeze()
+      expect(() =>
+        Immuter.produce(nextState3, (draftState) => {
+          draftState.name = 'any name'
+        }),
+      ).toThrow(CloneExceptionError)
     })
   })
 })
