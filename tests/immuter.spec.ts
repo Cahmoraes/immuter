@@ -656,7 +656,7 @@ describe('Immuter test suite', () => {
   })
 
   describe('Immuter.global', () => {
-    it('should not freeze when use Immuter.global.not.freeze', () => {
+    it('should not freeze when execute Immuter.global.not.freeze', () => {
       Immuter.global.not.freeze()
       const source = {
         name: 'John',
@@ -680,6 +680,42 @@ describe('Immuter test suite', () => {
       expect(nextState.address.city).toBe('São Paulo')
       expect(nextState2.name).toBe('igor')
       expect(nextState2.address.city).toBe('Tokyo')
+    })
+
+    it('should freeze when execute Immuter.global.freeze()', () => {
+      Immuter.global.not.freeze()
+      const source = {
+        name: 'John',
+        address: {
+          city: 'London',
+          country: 'UK',
+        },
+      }
+
+      const nextState = Immuter.produce(source, (draftState) => {
+        draftState.name = 'caique'
+        draftState.address.city = 'São Paulo'
+      })
+
+      const nextState2 = Immuter.produce(nextState, (draftState) => {
+        draftState.name = 'igor'
+        draftState.address.city = 'Tokyo'
+      })
+
+      expect(nextState.name).toBe('caique')
+      expect(nextState.address.city).toBe('São Paulo')
+      expect(nextState2.name).toBe('igor')
+      expect(nextState2.address.city).toBe('Tokyo')
+
+      Immuter.global.freeze()
+
+      const nextState3 = Immuter.produce(nextState2, (draftState) => {
+        draftState.name = 'isabella'
+        draftState.address.city = 'San Francisco'
+      })
+
+      expect(() => (nextState3.address.city = 'any city')).toThrow(TypeError)
+      expect(() => (nextState3.name = 'any name')).toThrow(TypeError)
     })
   })
 })
