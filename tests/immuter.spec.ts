@@ -654,4 +654,32 @@ describe('Immuter test suite', () => {
       expect(clonedState.length).toBe(4)
     })
   })
+
+  describe('Immuter.global', () => {
+    it('should not freeze when use Immuter.global.not.freeze', () => {
+      Immuter.global.not.freeze()
+      const source = {
+        name: 'John',
+        address: {
+          city: 'London',
+          country: 'UK',
+        },
+      }
+
+      const nextState = Immuter.produce(source, (draftState) => {
+        draftState.name = 'caique'
+        draftState.address.city = 'São Paulo'
+      })
+
+      const nextState2 = Immuter.produce(nextState, (draftState) => {
+        draftState.name = 'igor'
+        draftState.address.city = 'Tokyo'
+      })
+
+      expect(nextState.name).toBe('caique')
+      expect(nextState.address.city).toBe('São Paulo')
+      expect(nextState2.name).toBe('igor')
+      expect(nextState2.address.city).toBe('Tokyo')
+    })
+  })
 })

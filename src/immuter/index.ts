@@ -1,3 +1,4 @@
+import { GlobalConfig } from '../immuter-global-config'
 import { CloneService } from './services/clone-service'
 import { FreezeService } from './services/freeze-service'
 import { ProduceService } from './services/produce-service'
@@ -6,11 +7,30 @@ type Produce<TBaseState> = (draftState: TBaseState) => void
 
 export type ImmuterConfig = {
   freeze: boolean
+  global: boolean
 }
 
 export class Immuter {
   private static config: ImmuterConfig = {
     freeze: true,
+    global: false,
+  }
+
+  private static setGlobalConfig(aBoolean: boolean) {
+    this.config.global = aBoolean
+  }
+
+  private static setFreezeConfig(aBoolean: boolean) {
+    this.config.freeze = aBoolean
+  }
+
+  private static globalImmuterConfig = new GlobalConfig({
+    setFreezeConfig: Immuter.setFreezeConfig.bind(this),
+    setGlobalConfig: Immuter.setGlobalConfig.bind(this),
+  })
+
+  public static get global() {
+    return this.globalImmuterConfig
   }
 
   public static get not() {
@@ -51,7 +71,7 @@ export class Immuter {
   }
 
   private static resetConfig() {
-    this.config.freeze = true
+    this.config.global ? this.setFreeze(false) : this.setFreeze(true)
   }
 
   public static produce<TBaseState extends object>(
