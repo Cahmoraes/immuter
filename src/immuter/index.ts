@@ -39,11 +39,6 @@ export class Immuter {
     }
   }
 
-  public clone<TBaseState extends object>(aBaseState: TBaseState): TBaseState {
-    const draftState = CloneService.execute(aBaseState)
-    return this.execute(draftState)
-  }
-
   public static produce<TBaseState extends object>(
     aBaseState: TBaseState,
     aProducer: Producer<TBaseState>,
@@ -55,6 +50,11 @@ export class Immuter {
     aBaseState: TBaseState,
   ): TBaseState {
     return this.globalImmuterInstance.clone(aBaseState)
+  }
+
+  public clone<TBaseState extends object>(aBaseState: TBaseState): TBaseState {
+    const draftState = CloneService.execute(aBaseState)
+    return this.execute(draftState)
   }
 
   private execute<TBaseState extends object>(
