@@ -58,7 +58,7 @@ export class Immuter {
     aDraftState: TBaseState,
   ): TBaseState {
     const result = this.freezeIfNecessary(aDraftState)
-    Immuter.resetConfig()
+    Immuter.resetFreezeConfig()
     return result
   }
 
@@ -70,7 +70,7 @@ export class Immuter {
       : aDraftState
   }
 
-  private static resetConfig() {
+  private static resetFreezeConfig() {
     this.config.global ? this.setFreeze(false) : this.setFreeze(true)
   }
 

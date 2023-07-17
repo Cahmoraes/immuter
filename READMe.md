@@ -9,7 +9,8 @@ Com o Immuter, você pode:
 - Produzir objetos imutáveis com base em um objeto de origem, aplicando modificações através de uma função de produtor, ex: `Immuter.produce`.
 - Clonar objetos recursivamente de forma imutável, preservando a estrutura e os valores originais.
 - Trabalhar com estruturas de dados complexas, como arrays, mapas, conjuntos e datas, mantendo a imutabilidade em todos os níveis, `Immuter.clone`.
-- É possível desligar o comportamento imutável por meio de uma interface amigável: `Immuter.not.freeze.clone` ou `Immuter.not.freeze.produce`.
+- É possível desligar e ligar o comportamento imutável globalmente por meio de uma interface amigável. Para desligar: `Immuter.global.not.freeze()` e para ligar: `Immuter.global.freeze()`.
+- É possível desligar o comportamento imutável para cada método: `Immuter.not.freeze.clone` ou `Immuter.not.freeze.produce`.
 
 A abordagem imutável traz benefícios significativos para o desenvolvimento de software, como facilitar o rastreamento de alterações, evitar efeitos colaterais indesejados e simplificar o controle de estado em aplicações complexas.
 

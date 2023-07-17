@@ -716,6 +716,16 @@ describe('Immuter test suite', () => {
 
       expect(() => (nextState3.address.city = 'any city')).toThrow(TypeError)
       expect(() => (nextState3.name = 'any name')).toThrow(TypeError)
+
+      Immuter.global.not.freeze()
+      // Immuter.global.freeze()
+
+      const nextState4 = Immuter.produce(nextState, (draftState) => {
+        draftState.name = 'bolt'
+        draftState.address.city = 'Miami'
+      })
+      nextState4.name = 'bob'
+      expect(nextState4.name).toBe('bob')
     })
   })
 })
