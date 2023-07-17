@@ -1,8 +1,10 @@
 type Producer<TBaseState> = (draftState: TBaseState) => void;
 declare class Immuter {
     private readonly config;
-    private static globalImmuterInstance;
+    private static instance;
     private constructor();
+    private static createImmutable;
+    private static createMutable;
     static get global(): {
         not: {
             freeze: () => void;
