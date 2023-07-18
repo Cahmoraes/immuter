@@ -549,6 +549,21 @@ describe('Immuter test suite', () => {
     expect(clonedState.length).toBe(3)
   })
 
+  it('should clone object with Symbols', () => {
+    const symbolProperty = Symbol('property')
+    const baseState = {
+      [symbolProperty]: 'value',
+    }
+    const clonedState = Immuter.clone(baseState)
+
+    expect(baseState[symbolProperty]).toBe('value')
+    expect(clonedState[symbolProperty]).toBe('value')
+
+    baseState[symbolProperty] = 'change_value'
+    expect(baseState[symbolProperty]).toBe('change_value')
+    expect(clonedState[symbolProperty]).toBe('value')
+  })
+
   describe('Immuter.clone not freeze', () => {
     it('should clone data structures and immutable', () => {
       const baseState = {
@@ -737,7 +752,7 @@ describe('Immuter test suite', () => {
       clonedState.push(4)
       expect(clonedState.length).toBe(4)
     })
-    it('should clone object with Symbols', () => {
+    it('should produce clone object with Symbols', () => {
       const symbolProperty = Symbol('property')
       const baseState = {
         [symbolProperty]: 'value',
