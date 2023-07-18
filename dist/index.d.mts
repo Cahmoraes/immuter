@@ -20,6 +20,7 @@ declare class Immuter {
     private execute;
     private freezeIfNecessary;
     produce<TBaseState extends object>(aBaseState: TBaseState, produce: Producer<TBaseState>): TBaseState;
+    private throwIfNotObject;
 }
 
 export { Immuter };
