@@ -2,6 +2,7 @@ import { Immuter } from '../src'
 import { CannotAssignToImmutableMapError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-map-error'
 import { CannotAssignToImmutableSetError } from '../src/immuter/shared/errors/cannot-assign-to-immutable-set-error'
 import { CloneExceptionError } from '../src/immuter/shared/errors/clone-exception-error'
+import { InvalidBaseStateError } from '../src/immuter/shared/errors/invalid-base-state-error'
 
 describe('Immuter test suite', () => {
   it('should clone basic object', () => {
@@ -17,6 +18,47 @@ describe('Immuter test suite', () => {
     expect(myObject).toEqual({ name: 'caique' })
     expect(myObject.name).toBe('caique')
     expect(result.name).toBe('thomas')
+  })
+
+  it('should return baseState when is not a valid type', () => {
+    let baseState: any = 'aString'
+    expect(() =>
+      Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      }),
+    ).toThrow('Invalid baseState type: [string]')
+
+    baseState = 100
+    expect(() =>
+      Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      }),
+    ).toThrow('Invalid baseState type: [number]')
+
+    baseState = null
+    expect(() =>
+      Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      }),
+    ).toThrow('Invalid baseState type: [null]')
+
+    baseState = undefined
+    expect(() =>
+      Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      }),
+    ).toThrow('Invalid baseState type: [undefined]')
+
+    baseState = true
+    expect(() =>
+      Immuter.produce(baseState, (draft) => {
+        draft.name = 'thomas'
+      }),
+    ).toThrow('Invalid baseState type: [boolean]')
+
+    expect(() => Immuter.clone(baseState)).toThrow(
+      'Invalid baseState type: [boolean]',
+    )
   })
 
   it('should clone basic object with getters and setters', () => {

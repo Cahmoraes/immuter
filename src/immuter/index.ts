@@ -1,6 +1,8 @@
 import { CloneService } from './services/clone-service'
 import { FreezeService } from './services/freeze-service'
 import { ProduceService } from './services/produce-service'
+import { InvalidBaseStateError } from './shared/errors/invalid-base-state-error'
+import { TypeCheck } from './shared/type-check'
 
 type Producer<TBaseState> = (draftState: TBaseState) => void
 type ImmuterConfigProps = {
@@ -58,6 +60,7 @@ export class Immuter {
   }
 
   public clone<TBaseState extends object>(aBaseState: TBaseState): TBaseState {
+    this.throwIfNotObject(aBaseState)
     const draftState = CloneService.execute(aBaseState)
     return this.execute(draftState)
   }
@@ -79,8 +82,14 @@ export class Immuter {
     aBaseState: TBaseState,
     produce: Producer<TBaseState>,
   ): TBaseState {
+    this.throwIfNotObject(aBaseState)
     const draftState = CloneService.execute(aBaseState)
     ProduceService.execute(draftState, produce)
     return this.execute(draftState)
+  }
+
+  private throwIfNotObject<TBaseState>(aBaseState: TBaseState) {
+    if (TypeCheck.isPrimitive(aBaseState))
+      throw new InvalidBaseStateError(TypeCheck.typeOf(aBaseState))
   }
 }
