@@ -5,7 +5,7 @@ import {
   ObjectFreezeHandler,
   SetFreezeHandler,
 } from '../freeze-handlers'
-import { DateFreezeHandler } from '../freeze-handlers/date-clone-handler'
+import { DateFreezeHandler } from '../freeze-handlers/date-freeze-handler'
 
 export class FreezeService {
   private static recursivelyHandler?: FreezeHandler
