@@ -4,8 +4,14 @@
   "description": "Pacote para trabalhar com imutabilidade e clonagem profunda de estruturas de dados",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
   "author": "Cahmoraes <ike.moraes93@gmail.com>",
-  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cahmoraes/immuter"
@@ -26,11 +32,11 @@
   "license": "MIT",
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.0.1",
-    "@vitest/coverage-v8": "^1.4.0",
-    "eslint": "^8.45.0",
+    "@vitest/coverage-v8": "^2.1.4",
+    "eslint": "^9.14.0",
     "eslint-plugin-vitest-globals": "^1.4.0",
     "tsup": "^8.0.2",
     "typescript": "^5.1.6",
-    "vitest": "^1.4.0"
+    "vitest": "^2.1.4"
   }
 }
